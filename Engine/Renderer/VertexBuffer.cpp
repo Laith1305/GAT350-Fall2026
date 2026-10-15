@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "VertexBuffer.h"
+#include "Renderer.h"
 
 namespace nu
 {
@@ -14,15 +15,16 @@ namespace nu
 		}
 	}
 
-	bool VertexBuffer::Create(uint32_t vertexCount, uint32_t vertexSize, const uint8_t* data, SDL_GPUDevice* gpuDevice)
+	bool VertexBuffer::Create(uint32_t vertexCount, uint32_t vertexSize, const uint8_t* data, const Renderer& renderer)
 	{
 		// store the vertex count in m_vertexCount (needed later when drawing)
 		// store the gpu device in m_gpuDevice so the destructor can release the buffer later
 		m_vertexCount = vertexCount;
-		m_gpuDevice = gpuDevice;
+		m_gpuDevice = renderer.m_gpuDevice;
 
 		// calculate the total size in bytes of all the vertices (number of vertices * size of one vertex)
-		uint32_t verticesSize = vertexCount * vertexSize;
+		uint32_t verticesSize = m_vertexCount * vertexSize;
+
 
 		// --- create the vertex buffer ---
 		// this buffer lives in gpu memory, the cpu can't write to it directly
@@ -35,7 +37,7 @@ namespace nu
 		};
 
 		// create the buffer with SDL_CreateGPUBuffer(device, &createInfo) and store it in m_gpuBuffer
-		m_gpuBuffer = SDL_CreateGPUBuffer(gpuDevice, &vertexBufferCreateInfo);
+		m_gpuBuffer = SDL_CreateGPUBuffer(m_gpuDevice, &vertexBufferCreateInfo);
 		if (m_gpuBuffer == nullptr)
 		{
 			std::cerr << "Could not create vertex buffer: " << SDL_GetError() << std::endl;
@@ -54,12 +56,12 @@ namespace nu
 		};
 
 		// create the transfer buffer with SDL_CreateGPUTransferBuffer(device, &createInfo)
-		SDL_GPUTransferBuffer* transferBuffer = SDL_CreateGPUTransferBuffer(gpuDevice, &transferBufferCreateInfo);
+		SDL_GPUTransferBuffer* transferBuffer = SDL_CreateGPUTransferBuffer(m_gpuDevice, &transferBufferCreateInfo);
 		if (transferBuffer == nullptr)
 		{
 			std::cerr << "Could not create transfer buffer: " << SDL_GetError() << std::endl;
 
-			SDL_ReleaseGPUBuffer(gpuDevice, m_gpuBuffer);
+			SDL_ReleaseGPUBuffer(m_gpuDevice, m_gpuBuffer);
 			m_gpuBuffer = nullptr;
 
 			return false;
@@ -70,13 +72,13 @@ namespace nu
 		// map the transfer buffer with SDL_MapGPUTransferBuffer(device, transferBuffer, false)
 		// mapping gives the cpu a pointer it can write to
 		// the function returns void*, so static_cast it to uint8_t*
-		uint8_t* transferData = static_cast<uint8_t*>(SDL_MapGPUTransferBuffer(gpuDevice, transferBuffer, false));
+		uint8_t* transferData = static_cast<uint8_t*>(SDL_MapGPUTransferBuffer(m_gpuDevice, transferBuffer, false));
 		if (transferData == nullptr)
 		{
 			std::cerr << "Could not map transfer buffer: " << SDL_GetError() << std::endl;
 
-			SDL_ReleaseGPUTransferBuffer(gpuDevice, transferBuffer);
-			SDL_ReleaseGPUBuffer(gpuDevice, m_gpuBuffer);
+			SDL_ReleaseGPUTransferBuffer(m_gpuDevice, transferBuffer);
+			SDL_ReleaseGPUBuffer(m_gpuDevice, m_gpuBuffer);
 			m_gpuBuffer = nullptr;
 
 			return false;
@@ -87,19 +89,19 @@ namespace nu
 
 		// unmap the transfer buffer with SDL_UnmapGPUTransferBuffer(device, transferBuffer)
 		// the cpu is done writing, so the gpu can now use it
-		SDL_UnmapGPUTransferBuffer(gpuDevice, transferBuffer);
+		SDL_UnmapGPUTransferBuffer(m_gpuDevice, transferBuffer);
 
 		// --- upload the transfer buffer to the vertex buffer ---
 		// the gpu does the copy, so it has to be recorded in a command buffer and submitted
 
 		// get a command buffer with SDL_AcquireGPUCommandBuffer(device)
-		SDL_GPUCommandBuffer* commandBuffer = SDL_AcquireGPUCommandBuffer(gpuDevice);
+		SDL_GPUCommandBuffer* commandBuffer = SDL_AcquireGPUCommandBuffer(m_gpuDevice);
 		if (commandBuffer == nullptr)
 		{
 			std::cerr << "Could not acquire GPU command buffer: " << SDL_GetError() << std::endl;
 
-			SDL_ReleaseGPUTransferBuffer(gpuDevice, transferBuffer);
-			SDL_ReleaseGPUBuffer(gpuDevice, m_gpuBuffer);
+			SDL_ReleaseGPUTransferBuffer(m_gpuDevice, transferBuffer);
+			SDL_ReleaseGPUBuffer(m_gpuDevice, m_gpuBuffer);
 			m_gpuBuffer = nullptr;
 
 			return false;
@@ -132,8 +134,8 @@ namespace nu
 		{
 			std::cerr << "Could not submit GPU command buffer: " << SDL_GetError() << std::endl;
 
-			SDL_ReleaseGPUTransferBuffer(gpuDevice, transferBuffer);
-			SDL_ReleaseGPUBuffer(gpuDevice, m_gpuBuffer);
+			SDL_ReleaseGPUTransferBuffer(m_gpuDevice, transferBuffer);
+			SDL_ReleaseGPUBuffer(m_gpuDevice, m_gpuBuffer);
 			m_gpuBuffer = nullptr;
 
 			return false;
@@ -141,7 +143,7 @@ namespace nu
 
 		// the transfer buffer is no longer needed,
 		// release it with SDL_ReleaseGPUTransferBuffer(device, transferBuffer)
-		SDL_ReleaseGPUTransferBuffer(gpuDevice, transferBuffer);	
+		SDL_ReleaseGPUTransferBuffer(m_gpuDevice, transferBuffer);	
 
 		// vertex buffer created and uploaded successfully
 		return true;

@@ -250,7 +250,7 @@ namespace nu
 
     }
 
-    void Renderer::Draw(uint32_t vertexCount)
+    void Renderer::Draw(uint32_t m_vertexCount)
     {
         // draw using the currently bound pipeline and vertex buffer with SDL_DrawGPUPrimitives()
         // parameters:
@@ -260,6 +260,14 @@ namespace nu
         //   first vertex   - 0, start at the first vertex in the buffer
         //   first instance - 0, start at the first instance
 
-		SDL_DrawGPUPrimitives(m_renderPass, vertexCount, 1, 0, 0);
+		SDL_DrawGPUPrimitives(m_renderPass, m_vertexCount, 1, 0, 0);
+    }
+    void Renderer::SetVertexUniform(uint32_t slot, const void* data, uint32_t size)
+    {
+		SDL_PushGPUVertexUniformData(m_commandBuffer, slot, data, size);
+    }
+    void Renderer::SetFragmentUniform(uint32_t slot, const void* data, uint32_t size)
+    {
+		SDL_PushGPUFragmentUniformData(m_commandBuffer, slot, data, size);
     }
 }
