@@ -17,7 +17,7 @@ namespace nu
 		}
 	}
 
-	bool Shader::Load(const std::string& filename, Renderer& renderer, uint32_t uniformCount)
+	bool Shader::Load(const std::string& filename, Renderer& renderer, uint32_t uniformCount, uint32_t samplerCount)
 	{
 		// store the renderer's gpu device in m_gpuDevice so the destructor can release the shader later
 
@@ -94,6 +94,7 @@ namespace nu
 			.entrypoint = entrypoint, // todo: the entry function name
 			.format = format, // todo: the shader format found above
 			.stage = stage, // todo: the shader stage found above
+			.num_samplers = samplerCount, 
 			.num_uniform_buffers = uniformCount
 		};
 

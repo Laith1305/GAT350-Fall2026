@@ -18,7 +18,7 @@ namespace nu
         std::string name;
         std::string tag;
         Transform transform;
-        Vector2 velocity{ 0.0f, 0.0f };
+        glm::vec3 velocity{ 0.0f };
         float damping{ 0.0f };
         float lifespan{ 0 };
         res_t<Model> model;
@@ -50,9 +50,9 @@ namespace nu
         const Transform& GetTransform() const { return m_transform; }
         void SetTransform(const Transform& transform) { m_transform = transform; }
         
-        void SetPosition(const Vector2& position) { m_transform.position = position; }
-        void SetRotation(float rotation) { m_transform.rotation = rotation; }
-        void SetScale(float scale) { m_transform.scale = scale; }
+        void SetPosition(const glm::vec3& position) { m_transform.position = position; }
+        void SetRotation(const glm::vec3& rotation) { m_transform.rotation = rotation; }
+        void SetScale(const glm::vec3& scale) { m_transform.scale = scale; }
 
         const std::string& GetName() const { return m_name; }
 

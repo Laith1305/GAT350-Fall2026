@@ -1,36 +1,55 @@
 #pragma once
-#include "Mesh.h"
+#include "Resources/Resource.h"
+#include "VertexBuffer.h"
+#include "Texture.h"
+#include "IndexBuffer.h"
+#include <glm/glm.hpp>
+#include <memory>
+#include <string>
+#include <vector>
+
+
+// forward declare assimp types so the header doesn't pull in assimp
+struct aiNode;
+struct aiMesh;
+struct aiScene;
 
 namespace nu
 {
-	class Model
+	class Model : public Resource
 	{
 	public:
-		Model() = default;
-		Model(const std::vector<Mesh>& meshes) : m_meshes{ meshes } 
+		struct Vertex
 		{
-			CalculateRadius();
-		}
+			glm::vec3 position;
+			glm::vec2 texcoord;
+			glm::vec3 normal;
+			glm::vec3 tangent;
+		};
+
+		// each mesh owns its own vertex and index buffer
+		struct Mesh
+		{
+			std::unique_ptr<VertexBuffer> vertexBuffer;
+			std::unique_ptr<IndexBuffer> indexBuffer;
+		};
+
+	public:
+		bool Load(const std::string& filename, const class Renderer& renderer);
+
+		// binds and draws every mesh, call between BeginFrame and EndFrame with a pipeline set
+		void Draw(class Renderer& renderer) const;
+
+		res_t<class Texture> GetTexture()  { return m_texture; }
 		
-		void AddMesh(const Mesh& mesh) 
-		{
-			m_meshes.push_back(mesh); 
-			CalculateRadius();
-		}
-
-		void SetMeshes(const std::vector<Mesh>& meshes) 
-		{
-			m_meshes = meshes; 
-			CalculateRadius();
-		}
-
-		const std::vector<Mesh>& GetMeshes() const { return m_meshes; }
-
-		float GetRadius() const { return m_radius; }
-		void CalculateRadius();
 
 	private:
-		float m_radius = 0.0f;
+		void ProcessNode(aiNode* node, const aiScene* scene, const class Renderer& renderer);
+		void ProcessMesh(aiMesh* mesh, const aiScene* scene, const class Renderer& renderer);
+
+	private:
+		// a model can be made up of multiple meshes
 		std::vector<Mesh> m_meshes;
+		res_t<class Texture> m_texture;
 	};
 }
