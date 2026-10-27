@@ -69,7 +69,7 @@ namespace nu
 
 	private:
 		SDL_Window* m_window = nullptr;
-		SDL_Renderer* m_renderer = nullptr;
+		SDL_Renderer* m_renderer;
 
 		SDL_GPUDevice* m_gpuDevice = nullptr;
 		SDL_GPUCommandBuffer* m_commandBuffer = nullptr;

@@ -86,11 +86,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <FxCompile Include="color.frag.hlsl" />
-    <FxCompile Include="lit.frag.hlsl" />
-    <FxCompile Include="lit.vert.hlsl" />
+    <FxCompile Include="gouraud.frag.hlsl" />
+    <FxCompile Include="gouraud.vert.hlsl" />
     <FxCompile Include="position.vert.hlsl" />
     <FxCompile Include="unlit.frag.hlsl" />
     <FxCompile Include="unlit.vert.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Lighting.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -54,13 +54,7 @@ namespace nu
         return true;
     }
 
-    void Renderer::Shutdown()
-    {
-        TTF_Quit();
-        SDL_DestroyRenderer(m_renderer);
-        SDL_DestroyWindow(m_window);
-        SDL_Quit();
-    }
+    
 
     void Renderer::SetColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
     {
@@ -318,5 +312,13 @@ namespace nu
 		};
 
         m_depthTexture = SDL_CreateGPUTexture(m_gpuDevice, &depthInfo);
+    }
+
+    void Renderer::Shutdown()
+    {
+        TTF_Quit();
+        SDL_DestroyRenderer(m_renderer);
+        SDL_DestroyWindow(m_window);
+        SDL_Quit();
     }
 }

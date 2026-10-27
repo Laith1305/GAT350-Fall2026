@@ -213,7 +213,6 @@
     <ClInclude Include="Serialization\Json.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Graphics\Main.cpp" />
     <ClCompile Include="Audio\Audio.cpp" />
     <ClCompile Include="Components\PhysicsComponent.cpp" />
     <ClCompile Include="Core\File.cpp" />

@@ -198,8 +198,5 @@
     <ClCompile Include="Renderer\Texture.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Graphics\Main.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
