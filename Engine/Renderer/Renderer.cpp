@@ -16,6 +16,7 @@ namespace nu
     {
         m_width = width;
         m_height = height;
+		
 
         SDL_Init(SDL_INIT_VIDEO);
 
@@ -24,6 +25,10 @@ namespace nu
             std::cerr << "TTF_Init Error: " << SDL_GetError() << std::endl;
             return false;
         }
+
+
+        m_renderer = SDL_CreateRenderer(m_window, NULL);
+        if (m_renderer == nullptr)
 
         m_window = SDL_CreateWindow(name, width, height, 0);
         if (m_window == nullptr) 
@@ -50,7 +55,7 @@ namespace nu
         std::cout << "GPU Driver Initialized: " << SDL_GetGPUDeviceDriver(m_gpuDevice) << std::endl;
 
 		//CreateDepthBuffer(static_cast<uint32_t>(width), static_cast<uint32_t>(height));
-
+        
         return true;
     }
 
@@ -279,7 +284,7 @@ namespace nu
 		SDL_PushGPUFragmentUniformData(m_commandBuffer, slot, data, size);
     }
 
-   
+    
     void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture)
     {
         SDL_GPUTextureSamplerBinding binding

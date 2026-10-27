@@ -49,7 +49,7 @@ namespace nu
 		void Draw(uint32_t vertexCount);
 		void DrawIndex(const class IndexBuffer& indexBuffer);
 
-
+		
 
 		void SetVertexUniform(uint32_t slot, const void* data, uint32_t size);
 		void SetFragmentUniform(uint32_t slot, const void* data, uint32_t size);
@@ -68,18 +68,22 @@ namespace nu
 		friend class IndexBuffer;
 
 	private:
+		SDL_Renderer* m_renderer = nullptr;
 		SDL_Window* m_window = nullptr;
-		SDL_Renderer* m_renderer;
 
 		SDL_GPUDevice* m_gpuDevice = nullptr;
 		SDL_GPUCommandBuffer* m_commandBuffer = nullptr;
 		SDL_GPURenderPass* m_renderPass = nullptr;
 		SDL_GPUTexture* m_depthTexture = nullptr;
 
-		bool m_cameraEnabled = true;
 		Vector2 m_camera;
+		bool m_cameraEnabled = true;
 
 		int m_width = 0;
 		int m_height = 0;
 	};
+
+	
+
 }
+

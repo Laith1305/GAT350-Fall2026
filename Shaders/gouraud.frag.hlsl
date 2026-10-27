@@ -1,10 +1,13 @@
-Texture2D<float4> u_texture : register(t0, space3);
-SamplerState u_sampler : register(s0, space3);
+#include "lighting.hlsli"
+Texture2D<float4> u_texture : register(t0, space2);
+SamplerState u_sampler : register(s0, space2);
 
-cbuffer uniforms : register(b0, space3)
+
+
+cbuffer MateralUniforms : register(b2, space3)
 {
-    float4 tint;
-};
+    Material material;
+}
 
 
 struct Input
@@ -24,7 +27,7 @@ Output main(Input input)
 {
 	Output output;
 	
-    float4 albedo = u_texture.Sample(u_sampler, input.texcoord) * tint;
+    float4 albedo = u_texture.Sample(u_sampler, input.texcoord) * material.color;
 	output.color =  float4(albedo.rgb * input.diffuse + input.specular, 1.0);
 	
 
