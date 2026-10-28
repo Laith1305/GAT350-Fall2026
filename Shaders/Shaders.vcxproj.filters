@@ -24,6 +24,12 @@
     <FxCompile Include="gouraud.vert.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="phong.vert.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="phong.frag.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="lighting.hlsli">

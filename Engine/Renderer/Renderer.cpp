@@ -38,7 +38,7 @@ namespace nu
             return false;
         }
 
-        SDL_GPUShaderFormat formats = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL;
+        /*SDL_GPUShaderFormat formats = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL;
         m_gpuDevice = SDL_CreateGPUDevice(formats, true, nullptr);
         if (!m_gpuDevice)
         {
@@ -46,7 +46,12 @@ namespace nu
             SDL_DestroyWindow(m_window);
             SDL_Quit();
             return false;
-        }
+        }*/
+
+        SDL_SetHint(SDL_HINT_GPU_DRIVER, "vulkan");
+        SDL_GPUShaderFormat formats = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL;
+        m_gpuDevice = SDL_CreateGPUDevice(formats, true, NULL);
+
 
         // claim the window for our modern GPU context
         SDL_ClaimWindowForGPUDevice(m_gpuDevice, m_window);
