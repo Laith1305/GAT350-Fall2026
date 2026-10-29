@@ -10,7 +10,9 @@ cbuffer VertexUniforms : register(b0, space1)
 
 cbuffer LightUniforms : register(b1, space1)
 {
-    Light light;
+    Light lights[MAX_LIGHTS];
+    uint numLights;
+    float3 ambient;
 }
 
 

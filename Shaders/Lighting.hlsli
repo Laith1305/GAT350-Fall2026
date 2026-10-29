@@ -4,6 +4,7 @@
 #define LIGHT_POINT         1
 #define LIGHT_SPOT          2
 
+static const uint MAX_LIGHTS = 8;
 
 struct Material
 {
@@ -103,6 +104,6 @@ void calculateLighting(Light light, Material material, float3 position, float3 N
     // light arriving at the surface
     float3 radiance = light.color * light.intensity * attenuation;
 
-    diffuse = light.ambient + calculateDiffuse(radiance, N, L);
-    specular = calculateSpecular(radiance, N, L, V, material);
+    diffuse += calculateDiffuse(radiance, N, L);
+    specular += calculateSpecular(radiance, N, L, V, material);
 }

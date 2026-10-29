@@ -15,6 +15,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #define CHECK_UNIFORM_BOUNDARY(T) static_assert((sizeof(T) % 16) == 0);
+#define MAX_LIGHTS 8
 
 
 using namespace nu;
@@ -43,14 +44,25 @@ int main()
     Engine::Instance().Initialize();
 
 
-    auto model = Resources().Get<Model>("models/spot.obj", Engine::Instance().GetRenderer());
-    //auto texture = Resources().Get<Texture>("models/spot_diffuse.png", Engine::Instance().GetRenderer());
+    auto model = Resources().Get<Model>("Models/sphere.obj", Engine::Instance().GetRenderer());
+    auto texture = Resources().Get<Texture>("textures/lava_diffuse.png", Engine::Instance().GetRenderer());
 
 
     auto vshader = Resources().Get<nu::Shader>("shaders/phong.vert", Engine::Instance().GetRenderer(), 3);
     auto fshader = Resources().Get<nu::Shader>("shaders/phong.frag", Engine::Instance().GetRenderer(), 3, 1);
 
     auto pipeline = std::make_shared<Pipeline>();
+
+
+    pipeline->AddVertexBuffer(sizeof(Model::Vertex));
+    pipeline->AddVertexAttribute(0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, position));
+    pipeline->AddVertexAttribute(1, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2, offsetof(Model::Vertex, texcoord));
+    pipeline->AddVertexAttribute(2, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, normal));
+    pipeline->AddVertexAttribute(3, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, tangent));
+
+    pipeline->Create(*vshader.get(), *fshader.get(),
+        Engine::Instance().GetRenderer().GetGPUDevice(),
+        Engine::Instance().GetRenderer().GetWindow());
 
 
     struct Transform
@@ -68,6 +80,9 @@ int main()
             return matrix;
         }
     };
+    Transform transform;
+    transform.scale = glm::vec3{ 4.0f };
+
 
     //Uniforms
     glm::vec4 Color4 { 1, 1, 1, 1 };
@@ -82,14 +97,23 @@ int main()
     CHECK_UNIFORM_BOUNDARY(VertexUniform);
 
     VertexUniform vertexUniform;
-    vertexUniform.cameraPosition = glm::vec3{ 0, 0, 5 };
+    vertexUniform.cameraPosition = glm::vec3{ 0, 3, 8 };
 
-
-
-    struct LightUniform
-    {
+    struct Light1 {
         glm::vec3 position;
-	    uint32_t type;
+        uint32_t type;
+        glm::vec3 direction;
+        float range;
+        glm::vec3 color;
+        float intensity;
+        glm::vec3 ambient;
+        float innerCutoff;
+        float outerCutoff;
+        glm::vec3 padding;
+    };
+    struct Light2 {
+        glm::vec3 position;
+        uint32_t type;
         glm::vec3 direction;
         float range;
         glm::vec3 color;
@@ -100,7 +124,14 @@ int main()
         glm::vec3 padding;
     };
 
-    LightUniform lightUniform{
+    struct LightUniform
+    {
+        Light1 lights[MAX_LIGHTS];
+        uint32_t numLights;
+        glm::vec3 ambient;
+    };
+
+    Light1 light1{
 	    .position{10, 10, 10},
         .type{LightType::Point},
   	    .direction{0, -1, 0},  
@@ -111,6 +142,24 @@ int main()
         .innerCutoff{0.3f},
         .outerCutoff{1.6f}
     };
+    Light1 light2{
+	    .position{10, 10, 10},
+        .type{LightType::Point},
+  	    .direction{0, -1, 0},  
+        .range{ 40 },
+	    .color{0, 0, 1},
+	    .intensity{1.0f},
+        .ambient{0.1f, 0.1f, 0.1f},
+        .innerCutoff{0.3f},
+        .outerCutoff{1.6f}
+    };
+
+
+    LightUniform lightUniform;
+    lightUniform.lights[0] = light1;
+    lightUniform.lights[0] = light2;
+    lightUniform.numLights = 2;
+    lightUniform.ambient = glm::vec3{ 0.2f };
 
     CHECK_UNIFORM_BOUNDARY(LightUniform);
 
@@ -125,28 +174,17 @@ int main()
     };
     MaterialUniform materialUniform{
 		.color{1, 0, 0, 1},
-        .tiling{1.0f, 1.0f},
+        .tiling{4.0f, 4.0f},
         .offset{0.0f, 0.0f},
         .shininess{ 128.0f }
     };
     
     
-    Transform transform;
 
 
 
 
-
-    pipeline->AddVertexBuffer(sizeof(Model::Vertex));
-    pipeline->AddVertexAttribute(0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, position));
-    pipeline->AddVertexAttribute(1, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2, offsetof(Model::Vertex, texcoord));
-    pipeline->AddVertexAttribute(2, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, normal));
-    pipeline->AddVertexAttribute(3, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, tangent));
-
-    pipeline->Create(*vshader.get(), *fshader.get(),
-        Engine::Instance().GetRenderer().GetGPUDevice(),
-        Engine::Instance().GetRenderer().GetWindow());
-
+    
     float scale = 0.5f;
     glm::vec4 color = { 1, 0, 1, 1 };
 
@@ -169,6 +207,8 @@ int main()
             }
         }
 
+
+
         // ENGINE
         Engine::Instance().Update();
         float dt = Engine::Instance().GetTime().GetDeltaTime();
@@ -184,8 +224,13 @@ int main()
 
         vertexUniform.cameraPosition += direction * 5.0f * dt;
 
+        lightUniform.lights[0].position = glm::eulerAngleY(time) * glm::vec4{ 0, 0, 10, 1 };
+        lightUniform.lights[1].position = glm::eulerAngleX(time * 0.5f) * glm::vec4{ 0, 0, 10, 1 };
 
-        if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_1)) lightUniform.type = LightType::Directional;
+
+
+
+        /*if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_1)) lightUniform.type = LightType::Directional;
         if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_2)) lightUniform.type = LightType::Point;
 
         if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_3))
@@ -194,7 +239,7 @@ int main()
             lightUniform.position = glm::vec3{ 0, 20, 0 };
             lightUniform.innerCutoff = glm::cos(glm::radians(10.0f));
             lightUniform.outerCutoff = glm::cos(glm::radians(15.0f));
-        }
+        }*/
 
 
       
@@ -223,18 +268,25 @@ int main()
 
         Engine::Instance().GetRenderer().BeginFrame();
 
+        
+
+        // <-- If this is missing or called AFTER Draw, you will get this error:
+        
+
         Engine::Instance().GetRenderer().SetPipeline(*pipeline);
         Engine::Instance().GetRenderer().SetVertexUniform(0, &vertexUniform, sizeof(vertexUniform));
         Engine::Instance().GetRenderer().SetVertexUniform(1, &lightUniform, sizeof(lightUniform));
         Engine::Instance().GetRenderer().SetLightUniform(2, &materialUniform, sizeof(materialUniform));
         Engine::Instance().GetRenderer().SetFragmentUniform(0, &materialUniform, sizeof(materialUniform));
 
-        Engine::Instance().GetRenderer().SetFragmentUniform(0, &vertexUniform, sizeof(vertexUniform));
-        Engine::Instance().GetRenderer().SetFragmentUniform(1, &lightUniform, sizeof(lightUniform));
+        Engine::Instance().GetRenderer().SetFragmentUniform(1, &vertexUniform, sizeof(vertexUniform));
+        Engine::Instance().GetRenderer().SetFragmentUniform(2, &lightUniform, sizeof(lightUniform));
 		//Engine::Instance().GetRenderer().SetFragmentTexture(0, *texture());
 
 
-        
+        Engine::Instance().GetRenderer().SetFragmentTexture(0, *texture);
+
+        //Engine::Instance().GetRenderer().DrawIndex();
 	
 
         model->Draw(Engine::Instance().GetRenderer());
