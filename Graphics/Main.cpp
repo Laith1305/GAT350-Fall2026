@@ -44,8 +44,8 @@ int main()
     Engine::Instance().Initialize();
 
 
-    auto model = Resources().Get<Model>("Models/sphere.obj", Engine::Instance().GetRenderer());
-    auto texture = Resources().Get<Texture>("textures/lava_diffuse.png", Engine::Instance().GetRenderer());
+    auto model = Resources().Get<Model>("Models/spot.obj", Engine::Instance().GetRenderer());
+    auto texture = Resources().Get<Texture>("textures/spot_diffuse.png", Engine::Instance().GetRenderer());
 
 
     auto vshader = Resources().Get<nu::Shader>("shaders/phong.vert", Engine::Instance().GetRenderer(), 3);
@@ -230,16 +230,16 @@ int main()
 
 
 
-        /*if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_1)) lightUniform.type = LightType::Directional;
-        if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_2)) lightUniform.type = LightType::Point;
+        if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_1)) light1.type = LightType::Directional;
+        if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_2)) light1.type = LightType::Point;
 
         if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_3))
         {
-            lightUniform.type = LightType::Spot;
-            lightUniform.position = glm::vec3{ 0, 20, 0 };
-            lightUniform.innerCutoff = glm::cos(glm::radians(10.0f));
-            lightUniform.outerCutoff = glm::cos(glm::radians(15.0f));
-        }*/
+            light1.type = LightType::Spot;
+            light1.position = glm::vec3{ 0, 20, 0 };
+            light1.innerCutoff = glm::cos(glm::radians(10.0f));
+            light1.outerCutoff = glm::cos(glm::radians(15.0f));
+        }
 
 
       
@@ -277,7 +277,7 @@ int main()
         Engine::Instance().GetRenderer().SetVertexUniform(0, &vertexUniform, sizeof(vertexUniform));
         Engine::Instance().GetRenderer().SetVertexUniform(1, &lightUniform, sizeof(lightUniform));
         Engine::Instance().GetRenderer().SetLightUniform(2, &materialUniform, sizeof(materialUniform));
-        Engine::Instance().GetRenderer().SetFragmentUniform(0, &materialUniform, sizeof(materialUniform));
+        //Engine::Instance().GetRenderer().SetFragmentUniform(0, &materialUniform, sizeof(materialUniform));
 
         Engine::Instance().GetRenderer().SetFragmentUniform(1, &vertexUniform, sizeof(vertexUniform));
         Engine::Instance().GetRenderer().SetFragmentUniform(2, &lightUniform, sizeof(lightUniform));
