@@ -1,0 +1,76 @@
+{
+  "actors": [
+    {
+      "name": "Camera",
+      "type": "Actor",
+      "tag": "Camera",
+      "active": true,
+      "transform": {
+        "position": [ 0, 0, 5 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "CameraComponent",
+          "fov": 70,
+          "near_plane": 0.001,
+          "far_plane": 5000
+        },
+        {
+          "type": "CameraControllerComponent",
+          "speed": 3,
+          "sensitivity": 0.4
+        }
+      ]
+    },
+    {
+      "name": "Light1",
+      "type": "Actor",
+      "tag": "Light",
+      "transform": {
+        "rotation": [ -60, 30, 0 ]
+      },
+      "components": [
+        {
+          "type": "LightComponent",
+          "light_type": "directional",
+          "color": [ 0.5, 0.5, 0.5 ],
+          "intensity": 1.0
+        }
+      ]
+    },
+    {
+      "name": "Light2",
+      "type": "Actor",
+      "tag": "Light",
+      "transform": {
+        "position": [ 5, 5, 0 ]
+      },
+      "components": [
+        {
+          "type": "LightComponent",
+          "light_type": "point",
+          "color": [ 1, 1, 1 ],
+          "intensity": 1.0,
+          "range": 40.0
+        }
+      ]
+    },
+    {
+      "name": "Ogre",
+      "type": "Actor",
+      "tag": "Ogre",
+      "transform": {
+        "position": [ 0, 0, 0 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/ogre.obj",
+          "materials": [ "materials/ogre.instance.json" ]
+        }
+      ]
+    }
+  ]
+}

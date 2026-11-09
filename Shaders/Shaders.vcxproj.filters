@@ -35,5 +35,8 @@
     <None Include="lighting.hlsli">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="uniforms.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

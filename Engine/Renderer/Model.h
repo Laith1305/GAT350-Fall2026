@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "MaterialInstance.h"
 
 
 // forward declare assimp types so the header doesn't pull in assimp
@@ -32,24 +33,28 @@ namespace nu
 		{
 			std::unique_ptr<VertexBuffer> vertexBuffer;
 			std::unique_ptr<IndexBuffer> indexBuffer;
+			uint32_t materialIndex = 0;
 		};
 
 	public:
 		bool Load(const std::string& filename, const class Renderer& renderer);
 
 		// binds and draws every mesh, call between BeginFrame and EndFrame with a pipeline set
-		void Draw(class Renderer& renderer) const;
+		void Draw(const class Renderer& renderer) const;
 
-		res_t<class Texture> GetTexture()  { return m_texture; }
 		
 
 	private:
 		void ProcessNode(aiNode* node, const aiScene* scene, const class Renderer& renderer);
 		void ProcessMesh(aiMesh* mesh, const aiScene* scene, const class Renderer& renderer);
 
+		void LoadMaterials(const aiScene* scene, const std::string& directory, const Renderer& renderer);
+
+
+
 	private:
 		// a model can be made up of multiple meshes
 		std::vector<Mesh> m_meshes;
-		res_t<class Texture> m_texture;
+		std::vector<MaterialInstance> m_materials;
 	};
 }

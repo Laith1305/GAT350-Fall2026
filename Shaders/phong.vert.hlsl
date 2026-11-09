@@ -1,25 +1,26 @@
-#include "Lighting.hlsli"
+#include "lighting.hlsli"
+#include "uniforms.hlsli"
 
-cbuffer VertexUniforms : register(b0, space1)
+
+cbuffer ObjectUniforms : register(OBJECT_SLOT, VERTEX_UNIFORM_SPACE)
 {
-    float4x4 model;
-    float4x4 mvp;
-    float3 cameraPosition;
-    float padding1;
+    Object object;
+}
+cbuffer FrameUniforms : register(FRAME_SLOT, VERTEX_UNIFORM_SPACE)
+{
+    Frame frame;
 }
 
-cbuffer LightUniforms : register(b1, space1)
+cbuffer LightUniforms : register(LIGHT_SLOT, VERTEX_UNIFORM_SPACE)
 {
-    Light lights[MAX_LIGHTS];
-    uint numLights;
-    float3 ambient;
+    Lights lights;
 }
-
-
-cbuffer MateralUniforms : register(b2, space1)
+cbuffer MateralUniforms : register(MATERIAL_SLOT, VERTEX_UNIFORM_SPACE)
 {
     Material material;
 }
+
+
 
 struct Input
 {
@@ -39,14 +40,11 @@ Output main(Input input)
 {
     Output output;
     output.texcoord = (input.texcoord * material.tiling) + material.offset;
-    output.position = mul(mvp, float4(input.position, 1.0f));
     
-    output.worldPosition = mul(model, float4(input.position, 1.0f)).xyz;
-    output.normal = normalize(mul((float3x3) model, input.normal));
+    output.worldPosition = mul(object.model, float4(input.position, 1.0f)).xyz;
+    output.position = mul(frame.viewProjection, float4(output.worldPosition, 1.0f));
    
-    
-    
-    
+    output.normal = normalize(mul((float3x3) object.normalMatrix, input.normal));
     return output;
 }
 

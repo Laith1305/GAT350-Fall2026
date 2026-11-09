@@ -1,15 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="Assets">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+      <UniqueIdentifier>{b4b31819-2da0-4d52-82ea-987d7cf84c48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets\Shaders">
-      <UniqueIdentifier>{d66b3919-8227-4407-843a-6116f65bb9c1}</UniqueIdentifier>
+    <Filter Include="Assets\Scenes">
+      <UniqueIdentifier>{3c4a9130-bf25-4491-97df-dc000f328192}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Materials">
+      <UniqueIdentifier>{e2e53380-4608-49ae-a132-8d7a16563456}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
+    <None Include="Assets\Scenes\scene.json">
+      <Filter>Assets\Scenes</Filter>
+    </None>
+    <None Include="Assets\Materials\phong.material.json">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="Assets\Materials\ogre.instance.json">
+      <Filter>Assets\Materials</Filter>
+    </None>
   </ItemGroup>
 </Project>

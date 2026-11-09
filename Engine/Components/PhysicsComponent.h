@@ -22,6 +22,7 @@ namespace nu
 
 		virtual void SetRotation(const glm::vec3& rotation) = 0;
 		virtual glm::vec3 GetRotation() const = 0;
+
 		virtual void Read(const json::value_t& value);
 
 	protected:

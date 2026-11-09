@@ -51,7 +51,7 @@ namespace nu
         // print out the driver being utilized (e.g., "vulkan" or "d3d12")
         std::cout << "GPU Driver Initialized: " << SDL_GetGPUDeviceDriver(m_gpuDevice) << std::endl;
 
-		//CreateDepthBuffer(static_cast<uint32_t>(width), static_cast<uint32_t>(height));
+		CreateDepthBuffer();
         
         return true;
     }
@@ -150,7 +150,7 @@ namespace nu
         SDL_BindGPUGraphicsPipeline(m_renderPass, pipeline.m_gpuPipeline);
     }
 
-    void Renderer::SetVertexBuffer(const VertexBuffer& vertexBuffer)
+    void Renderer::SetVertexBuffer(const VertexBuffer& vertexBuffer) const
     {
         // describe which buffer to bind and where to start reading from
         SDL_GPUBufferBinding binding{
@@ -171,7 +171,7 @@ namespace nu
 
     }
 
-    void Renderer::SetIndexBuffer(const IndexBuffer& indexBuffer)
+    void Renderer::SetIndexBuffer(const IndexBuffer& indexBuffer) const
     {
         // describe which buffer to bind and where to start reading from
         SDL_GPUBufferBinding binding{
@@ -186,7 +186,7 @@ namespace nu
 		SDL_BindGPUIndexBuffer(m_renderPass, &binding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
     }
 
-    void Renderer::Draw(uint32_t m_vertexCount)
+    void Renderer::Draw(uint32_t m_vertexCount) const
     {
         // draw using the currently bound pipeline and vertex buffer with SDL_DrawGPUPrimitives()
         // parameters:
@@ -198,7 +198,7 @@ namespace nu
 
 		SDL_DrawGPUPrimitives(m_renderPass, m_vertexCount, 1, 0, 0);
     }
-    void Renderer::DrawIndex(const IndexBuffer& indexBuffer)
+    void Renderer::DrawIndex(const IndexBuffer& indexBuffer) const
     {
         // draw using the currently bound pipeline, vertex buffer, and index buffer with SDL_DrawGPUIndexedPrimitives()
         // parameters:
@@ -210,17 +210,17 @@ namespace nu
 		//   first instance - 0, start at the first instance
 		SDL_DrawGPUIndexedPrimitives(m_renderPass, indexBuffer.GetIndexCount(), 1, 0, 0, 0);
     }
-    void Renderer::SetVertexUniform(uint32_t slot, const void* data, uint32_t size)
+    void Renderer::SetVertexUniform(UniformSlot slot, const void* data, uint32_t size) const
     {
-		SDL_PushGPUVertexUniformData(m_commandBuffer, slot, data, size);
+		SDL_PushGPUVertexUniformData(m_commandBuffer, static_cast<uint32_t>(slot), data, size);
     }
-    void Renderer::SetFragmentUniform(uint32_t slot, const void* data, uint32_t size)
+    void Renderer::SetFragmentUniform(UniformSlot slot, const void* data, uint32_t size) const
     {
-		SDL_PushGPUFragmentUniformData(m_commandBuffer, slot, data, size);
+		SDL_PushGPUFragmentUniformData(m_commandBuffer, static_cast<uint32_t>(slot), data, size);
     }
 
     
-    void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture)
+    void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture) const
     {
         SDL_GPUTextureSamplerBinding binding
         {

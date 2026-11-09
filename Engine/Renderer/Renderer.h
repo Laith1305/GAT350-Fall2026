@@ -1,6 +1,6 @@
 #pragma once
+#include "Uniforms.h"
 
-#include "Math/Vector2.h"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
@@ -22,21 +22,10 @@ namespace nu
 		void SetColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255) const;
 		void SetColor(float r, float g, float b, float a = 1.0f) const;
 		
-		//void DrawPoint(float x, float y) const;
-		//void DrawLine(float x1, float y1, float x2, float y2) const;
-		//void DrawFillRect(float x, float y, float w, float h) const;
-		//void DrawRect(float x, float y, float w, float h) const;
-
-		
-		//void DrawTexture(const class Texture& texture, float x, float y, float angle = 0.0f, float scale = 1.0f, bool flipH = false, const glm::vec2& origin = glm::vec2{ 0.5f, 0.5f }) const;
-		//void DrawTexture(const class Texture& texture, const struct Rect& source, float x, float y, float angle = 0.0f, float scale = 1.0f, bool flipH = false, const glm::vec2& origin = glm::vec2{ 0.5f, 0.5f }) const;
+	
 
 		int GetWidth() const { return m_width; }
 		int GetHeight() const { return m_height; }
-
-		//void SetCamera(const glm::vec2& camera) { m_camera = camera; }
-		void EnableCamera(bool enable = true) { m_cameraEnabled = enable; }
-
 
 		// SDL GPU
 
@@ -44,16 +33,15 @@ namespace nu
 		SDL_Window* GetWindow() const { return m_window; }
 
 		void SetPipeline(const class Pipeline& pipeline);
-		void SetVertexBuffer(const class VertexBuffer& vertexBuffer);
-		void SetIndexBuffer(const class IndexBuffer& indexBuffer);
-		void Draw(uint32_t vertexCount);
-		void DrawIndex(const class IndexBuffer& indexBuffer);
+		void SetVertexBuffer(const class VertexBuffer& vertexBuffer) const;
+		void SetIndexBuffer(const class IndexBuffer& indexBuffer) const;
+		void Draw(uint32_t vertexCount) const;
+		void DrawIndex(const class IndexBuffer& indexBuffer) const;
 
-		
+		void SetVertexUniform(UniformSlot slot, const void* data, uint32_t size) const;
+		void SetFragmentUniform(UniformSlot slot, const void* data, uint32_t size) const;
 
-		void SetVertexUniform(uint32_t slot, const void* data, uint32_t size);
-		void SetFragmentUniform(uint32_t slot, const void* data, uint32_t size);
-		void SetFragmentTexture(uint32_t slot, const class Texture& texture);
+		void SetFragmentTexture(uint32_t slot, const class Texture& texture) const;
 
 		void SetLightUniform(uint32_t slot, const void* data, uint32_t size);
 
@@ -76,8 +64,6 @@ namespace nu
 		SDL_GPURenderPass* m_renderPass = nullptr;
 		SDL_GPUTexture* m_depthTexture = nullptr;
 
-		Vector2 m_camera;
-		bool m_cameraEnabled = true;
 
 		int m_width = 0;
 		int m_height = 0;

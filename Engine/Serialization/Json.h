@@ -41,5 +41,7 @@ namespace nu::json
 	bool Read(const value_t& value, const std::string& name, std::string& data, bool required = false);
 	bool Read(const value_t& value, const std::string& name, glm::vec2& data, bool required = false);
 	bool Read(const value_t& value, const std::string& name, glm::vec3& data, bool required = false);
+	bool Read(const value_t& value, const std::string& name, glm::vec4& data, bool required = false);
 	bool Read(const value_t& value, const std::string& name, std::vector<int>& data, bool required = false);
+	bool Read(const value_t& value, const std::string& name, std::vector<std::string>& data, bool required = false);
 }

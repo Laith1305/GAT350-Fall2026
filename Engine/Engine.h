@@ -3,6 +3,7 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/ParticleSystem.h"
 #include "Core/GameTime.h"
+#include <Resources/ResourceManager.h>
 #include "Input/Input.h"
 #include "Audio/Audio.h"
 //#include "Physics/Physics.h"

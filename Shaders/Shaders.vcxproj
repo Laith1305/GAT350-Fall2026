@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="lighting.hlsli" />
+    <None Include="uniforms.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

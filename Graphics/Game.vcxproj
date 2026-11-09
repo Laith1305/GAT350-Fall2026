@@ -190,6 +190,11 @@
       <Project>{1dc1933f-925a-3eb9-ac2e-61b6862b1f0c}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Materials\ogre.instance.json" />
+    <None Include="Assets\Materials\phong.material.json" />
+    <None Include="Assets\Scenes\scene.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

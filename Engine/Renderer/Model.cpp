@@ -5,7 +5,9 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <Engine.cpp>
 
+#define DEFAULT_MATERIAL "materials/phong.material.json"
 namespace nu
 {
 	bool Model::Load(const std::string& filename, const Renderer& renderer)
@@ -29,10 +31,11 @@ namespace nu
 		return true;
 	}
 
-	void Model::Draw(Renderer& renderer) const
+	void Model::Draw(const Renderer& renderer) const
 	{
 		for (const auto& mesh : m_meshes)
 		{
+
 			renderer.SetVertexBuffer(*mesh.vertexBuffer);
 			renderer.SetIndexBuffer(*mesh.indexBuffer);
 			renderer.DrawIndex(*mesh.indexBuffer);
@@ -114,6 +117,68 @@ namespace nu
 			return;
 		}
 
+		newMesh.materialIndex = mesh->mMaterialIndex;
+
 		m_meshes.push_back(std::move(newMesh));
+	}
+	void Model::LoadMaterials(const aiScene* scene, const std::string& directory, const Renderer& renderer)
+	{
+		// every imported material starts from the standard phong material
+		auto material = Resources().Get<Material>(DEFAULT_MATERIAL, renderer);
+
+		std::cout << "Loading " << scene->mNumMaterials << " material(s)" << std::endl;
+
+		m_materials.reserve(scene->mNumMaterials);
+		for (unsigned int i = 0; i < scene->mNumMaterials; i++)
+		{
+			const aiMaterial* source = scene->mMaterials[i];
+			MaterialInstance& instance = m_materials.emplace_back(material);
+
+			// base color: gltf uses BASE_COLOR, older formats (obj, fbx) use DIFFUSE
+			aiColor4D color;
+			if (source->Get(AI_MATKEY_BASE_COLOR, color) == AI_SUCCESS ||
+				source->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS)
+			{
+				instance.GetData().baseColor = glm::vec4{ color.r, color.g, color.b, color.a };
+			}
+
+			// shininess varies a lot between exporters, ignore zero
+			float shininess;
+			if (source->Get(AI_MATKEY_SHININESS, shininess) == AI_SUCCESS && shininess > 0.0f)
+			{
+				instance.GetData().shininess = shininess;
+			}
+
+			// base texture
+			aiString path;
+			if (source->GetTexture(aiTextureType_BASE_COLOR, 0, &path) == AI_SUCCESS ||
+				source->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS)
+			{
+				// embedded textures (glb, some fbx) use paths like "*0" and aren't loaded from disk yet
+				if (path.C_Str()[0] == '*')
+				{
+					std::cerr << "Embedded textures not supported yet: " << path.C_Str() << std::endl;
+				}
+				else
+				{
+					auto texture = Resources().Get<Texture>(directory + path.C_Str(), renderer);
+					if (!instance.SetTexture("base_map", texture))
+					{
+						std::cerr << "Material has no base_map slot for texture: " << path.C_Str() << std::endl;
+					}
+				}
+			}
+
+			// print what was loaded for this slot
+			aiString name;
+			source->Get(AI_MATKEY_NAME, name);
+
+			const MaterialData& data = instance.GetData();
+			std::cout << "  [" << i << "] " << name.C_Str()
+				<< " | color: " << data.baseColor.r << ", " << data.baseColor.g << ", " << data.baseColor.b << ", " << data.baseColor.a
+				<< " | shininess: " << data.shininess
+				<< " | texture: " << (path.length > 0 ? path.C_Str() : "none")
+				<< std::endl;
+		}
 	}
 }
