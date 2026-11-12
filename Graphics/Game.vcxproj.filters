@@ -24,5 +24,8 @@
     <None Include="Assets\Materials\ogre.instance.json">
       <Filter>Assets\Materials</Filter>
     </None>
+    <None Include="Assets\Materials\squirrel.instance.json">
+      <Filter>Assets\Materials</Filter>
+    </None>
   </ItemGroup>
 </Project>

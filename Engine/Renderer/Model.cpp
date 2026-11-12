@@ -5,9 +5,11 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <Engine.cpp>
+#include <Engine.h>
+#include "Core/File.h"
 
-#define DEFAULT_MATERIAL "materials/phong.material.json"
+#define DEFAULT_MATERIAL "Materials/phong.material.json"
+
 namespace nu
 {
 	bool Model::Load(const std::string& filename, const Renderer& renderer)
@@ -26,15 +28,28 @@ namespace nu
 			return false;
 		}
 
+		// texture paths in the model are relative to the model file
+		std::string directory = GetParentDirectory(filename) + "/";
+		LoadMaterials(scene, directory, renderer);
+		LoadMaterials(scene, directory, renderer);
+
+
+
 		ProcessNode(scene->mRootNode, scene, renderer);
 
 		return true;
 	}
 
-	void Model::Draw(const Renderer& renderer) const
+	
+
+	void Model::Draw(const Renderer& renderer, const std::vector<res_t<class MaterialInstance>>& overrides) const
 	{
 		for (const auto& mesh : m_meshes)
 		{
+			uint32_t slot = mesh.materialIndex;
+			MaterialInstance material = slot < overrides.size() && overrides[slot] ? *overrides[slot] : m_materials[slot];
+
+			renderer.SetMaterial(material);
 
 			renderer.SetVertexBuffer(*mesh.vertexBuffer);
 			renderer.SetIndexBuffer(*mesh.indexBuffer);

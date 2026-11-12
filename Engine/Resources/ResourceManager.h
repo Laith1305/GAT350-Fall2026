@@ -1,6 +1,7 @@
 #pragma once
 #include "Resource.h"
 #include "Core/Singleton.h"
+#include "Renderer/Texture.h"
 #include <map>
 #include <string>
 #include <iostream>
@@ -31,11 +32,11 @@ namespace nu
 	private:
 		std::map<std::string, res_t<Resource>> m_resources;
 	};
-
 	template<typename T, typename ...Args>
 		requires std::derived_from<T, Resource>
 	inline res_t<T> ResourceManager::Get(const std::string& name, Args && ...args)
 	{
+		//auto texture = Resources().Get<Texture>(directory + path.C_Str(), renderer);
 		auto iter = m_resources.find(name);
 		// check if resource exists
 		if (iter != m_resources.end())
@@ -52,7 +53,7 @@ namespace nu
 			return resource;
 		}
 
-		std::cout << "load: " << name << std::endl;
+		std::cout << "loading: " << name << std::endl;
 
 		// resource doesn't exist, create and load
 		res_t<T> resource = std::make_shared<T>();
@@ -100,6 +101,12 @@ namespace nu
 		m_resources[id] = resource;
 
 		return resource;
+	}
+
+	template<std::derived_from<Resource> T>
+	inline bool ResourceManager::AddResource(const std::string& name, const res_t<T>& resource)
+	{
+		return false;
 	}
 
 

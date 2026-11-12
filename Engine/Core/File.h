@@ -11,6 +11,8 @@ namespace nu
     std::string GetFilename(const std::string& path);
     std::string GetFileExtension(const std::string& path);
     std::string GetFilenameNoExtension(const std::string& path);
+    std::string GetParentDirectory(const std::string& path);
+    
     
     bool FileExists(const std::string& path);
 

@@ -77,6 +77,12 @@ namespace nu
 		renderer.SetFragmentUniform(UniformSlot::Light, &lightUniform, sizeof(lightUniform));
 
 
+		for(const auto& actor : m_actors)
+		{
+			if (actor && actor->IsActive())
+			actor->Draw(renderer);
+		}
+
 	}
 
 	void Scene::AddActor(std::unique_ptr<Actor> actor)

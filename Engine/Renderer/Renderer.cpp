@@ -5,6 +5,7 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "Texture.h"
+#include "MaterialInstance.h"
 
 #include "Math/Transform.h"
 #include "Math/MathUtils.h"
@@ -40,8 +41,8 @@ namespace nu
 
         
 
-        SDL_SetHint(SDL_HINT_GPU_DRIVER, "vulkan");
         SDL_GPUShaderFormat formats = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL;
+        SDL_SetHint(SDL_HINT_GPU_DRIVER, "vulkan");
         m_gpuDevice = SDL_CreateGPUDevice(formats, true, NULL);
 
 
@@ -142,7 +143,7 @@ namespace nu
 
 
 
-    void Renderer::SetPipeline(const Pipeline& pipeline)
+    void Renderer::SetPipeline(const Pipeline& pipeline) const
     {
         // bind the pipeline to the current render pass with SDL_BindGPUGraphicsPipeline(renderPass, gpuPipeline)
         // the pipeline sets the shaders and render settings used by the draw calls that follow
@@ -230,13 +231,13 @@ namespace nu
 
         SDL_BindGPUFragmentSamplers(m_renderPass, slot, &binding, 1);
     }
-   
 
-    void Renderer::SetLightUniform(uint32_t slot, const void* data, uint32_t size)
+    void Renderer::SetMaterial(const MaterialInstance& materialInstance) const
     {
-		SDL_PushGPUFragmentUniformData(m_commandBuffer, slot, data, size);
+		SetPipeline(materialInstance.GetMaterial().GetPipeline());
+		materialInstance.Bind(m_commandBuffer, m_renderPass);
     }
-
+  
 
     void Renderer::CreateDepthBuffer()
     {

@@ -35,7 +35,7 @@ namespace nu
 		// texture slots in sampler order, slot 0 = register(t0, space2)
 		JSON_READ_NAME(document, "textures", m_textureSlots);
 
-		m_defaultTexture = Resources().Get<Texture>("textures/default.png", renderer);
+		m_defaultTexture = Resources().Get<Texture>("textures/spot_diffuse.png", renderer);
 		if (!m_defaultTexture)
 		{
 			std::cerr << "Could not load default texture for Material: " << filename << std::endl;

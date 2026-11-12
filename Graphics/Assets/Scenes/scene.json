@@ -71,6 +71,49 @@
           "materials": [ "materials/ogre.instance.json" ]
         }
       ]
+    },
+    {
+      "name": "Squirrel",
+      "type": "Actor",
+      "tag": "Squirrel",
+      "transform": {
+        "position": [ 2, -1, 0 ],
+        "scale": [ 0.4, 0.4, 0.4 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/squirrel.glb",
+          "materials": [ "materials/squirrel.instance.json" ]
+        }
+      ]
+    },
+    {
+      "name": "Helmet",
+      "type": "Actor",
+      "transform": {
+        "position": [ 0, -1, 0 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/flight-helmet/flighthelmet.gltf"
+        }
+      ]
+    },
+    {
+      "name": "Cubone",
+      "type": "Actor",
+      "transform": {
+        "position": [ -2, 0, 0 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/cubone.glb"
+
+        }
+      ]
     }
   ]
 }

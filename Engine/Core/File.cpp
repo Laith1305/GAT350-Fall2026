@@ -45,6 +45,11 @@ namespace nu
 		return std::filesystem::path{ path }.stem().string();
 	}
 
+	std::string GetParentDirectory(const std::string& path)
+	{
+		return std::filesystem::path(path).parent_path().string();
+	}
+
 	bool FileExists(const std::string& path)
 	{
 		std::error_code ec;

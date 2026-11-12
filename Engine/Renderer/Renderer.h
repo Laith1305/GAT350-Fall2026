@@ -32,7 +32,7 @@ namespace nu
 		SDL_GPUDevice* GetGPUDevice() const { return m_gpuDevice; }
 		SDL_Window* GetWindow() const { return m_window; }
 
-		void SetPipeline(const class Pipeline& pipeline);
+		void SetPipeline(const class Pipeline& pipeline) const;
 		void SetVertexBuffer(const class VertexBuffer& vertexBuffer) const;
 		void SetIndexBuffer(const class IndexBuffer& indexBuffer) const;
 		void Draw(uint32_t vertexCount) const;
@@ -42,8 +42,8 @@ namespace nu
 		void SetFragmentUniform(UniformSlot slot, const void* data, uint32_t size) const;
 
 		void SetFragmentTexture(uint32_t slot, const class Texture& texture) const;
+		void SetMaterial(const class MaterialInstance& material) const;
 
-		void SetLightUniform(uint32_t slot, const void* data, uint32_t size);
 
 
 		void CreateDepthBuffer();
