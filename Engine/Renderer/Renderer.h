@@ -6,7 +6,7 @@
 
 namespace nu
 {
-	class Renderer
+	class Renderer 
 	{
 	public:
 		bool Initialize(const char* name, int width, int height);
@@ -47,6 +47,11 @@ namespace nu
 
 
 		void CreateDepthBuffer();
+		void SetClearColor(const glm::vec3& color) { m_clearColor = color; }
+		const glm::vec3& GetClearColor() const { return m_clearColor; }
+		void EndRenderPass();
+		SDL_GPUCommandBuffer* GetGPUCommandBuffer() const { return m_commandBuffer; }
+
 
 
 		friend class TextRenderer;
@@ -61,12 +66,21 @@ namespace nu
 
 		SDL_GPUDevice* m_gpuDevice = nullptr;
 		SDL_GPUCommandBuffer* m_commandBuffer = nullptr;
+		SDL_GPUTexture* m_swapchainTexture = nullptr;
 		SDL_GPURenderPass* m_renderPass = nullptr;
 		SDL_GPUTexture* m_depthTexture = nullptr;
+		SDL_GPUTexture* GetGPUSwapchainTexture() const { return m_swapchainTexture; }
 
 
 		int m_width = 0;
 		int m_height = 0;
+
+		glm::vec3 m_clearColor{ 0 };
+
+
+
+
+
 	};
 
 	

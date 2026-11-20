@@ -42,6 +42,7 @@ namespace nu
 		// binds and draws every mesh, call between BeginFrame and EndFrame with a pipeline set
 		void Draw(const class Renderer& renderer, const std::vector<res_t<class MaterialInstance>>& overrides = {}) const;
 
+		void UpdateGui() override;
 		
 
 	private:

@@ -3,6 +3,7 @@
 #include "Math/Transform.h"
 #include "Renderer/Model.h"
 #include "Framework/Scene.h"
+#include "Editor/Editor.h"
 #include <Resources/ResourceManager.h>
 #include <Renderer/VertexBuffer.h>
 #include <Renderer/IndexBuffer.h>
@@ -69,6 +70,7 @@ int main()
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
+			//Engine::Instance().ProcessEvent(event);
             if (event.type == SDL_EVENT_QUIT)
             {
                 quit = true;
@@ -88,9 +90,16 @@ int main()
         float dt = Engine::Instance().GetTime().GetDeltaTime();
         float time = Engine::Instance().GetTime().GetTime();
 
+		Engine::Instance().GetEditor().BeginFrame();
+		Engine::Instance().GetEditor().Update(scene);
+
        
 		scene.Update(dt);
 
+
+        //Render
+		Engine::Instance().GetRenderer().EndRenderPass();
+		Engine::Instance().GetRenderer().Draw(1);
        
         //MVP 
 		

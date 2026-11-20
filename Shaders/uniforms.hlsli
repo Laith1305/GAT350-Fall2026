@@ -5,7 +5,9 @@
 #define LIGHT_SLOT          b2
 #define MATERIAL_SLOT       b3
 
+#define VERTEX_TEXTURE_SPACE         space0
 #define VERTEX_UNIFORM_SPACE         space1
+#define FRAGMENT_TEXTURE_SPACE         space2
 #define FRAGMENT_UNIFORM_SPACE       space3
 
 struct Object

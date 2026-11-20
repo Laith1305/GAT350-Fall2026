@@ -8,7 +8,9 @@
 #include "Audio/Audio.h"
 //#include "Physics/Physics.h"
 
+#include "Editor/Editor.h"
 #include "Core/Singleton.h"
+
 
 namespace nu
 {
@@ -26,6 +28,8 @@ namespace nu
 		Time& GetTime() { return m_time; }
 		ParticleSystem& GetPS() { return *m_particleSystem; }
 		
+		Editor& GetEditor() { return *m_editor; }
+		std::unique_ptr <Editor> m_editor;
 
 	private:
 		friend class Singleton<Engine>;

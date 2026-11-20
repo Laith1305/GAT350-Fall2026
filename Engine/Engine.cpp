@@ -1,5 +1,5 @@
 // Engine::Instance().cpp : Defines the functions for the static library.
-//
+
 
 #include "pch.h"
 #include "Engine.h"
@@ -12,13 +12,14 @@ namespace nu
 		m_particleSystem = std::make_unique<ParticleSystem>();
 		m_audio = std::make_unique<Audio>();
 		m_input = std::make_unique<Input>();
+		m_editor = std::make_unique<Editor>();
 		
 
 		m_renderer->Initialize("Game Engine", 1920, 1024);
 		m_particleSystem->Initialize();
 		m_audio->Initialize();
 		m_input->Initialize();
-	
+		m_editor->Initialize(*m_renderer);
 
 		return true;
 	}
@@ -30,6 +31,7 @@ namespace nu
 		m_audio->Shutdown();
 		m_particleSystem->Shutdown();
 		m_renderer->Shutdown();
+		m_editor->Shutdown();
 	}
 
 	void Engine::Update()

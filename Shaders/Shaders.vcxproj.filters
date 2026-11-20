@@ -30,6 +30,12 @@
     <FxCompile Include="phong.frag.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="multi.frag.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="phong-normal.frag.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="lighting.hlsli">

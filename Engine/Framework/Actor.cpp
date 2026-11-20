@@ -114,6 +114,38 @@ namespace nu
         }
     }
 
+    void Actor::UpdateGui()
+    {
+		ImGui::Checkbox("##Active", &m_active);
+		ImGui::SameLine();
+
+		Object::UpdateGui();
+
+		ImGui::Text("Tag: %s", m_tag.c_str());
+		ImGui::Separator();
+        if(ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+			m_transform.UpdateGui();
+		}
+
+        // components information
+        for (auto& component : m_components)
+        {
+            ImGui::PushID(component.get());
+            ImGui::Separator();
+
+            bool active = component->IsActive();
+            if (ImGui::Checkbox("##active", &active)) component->SetActive(active);
+            ImGui::SameLine();
+
+            if (ImGui::CollapsingHeader(component->GetClassName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                component->UpdateGui();
+            }
+            ImGui::PopID();
+        }
+    }
+
 
     void Actor::AddComponent(std::unique_ptr<Component> component)
     {

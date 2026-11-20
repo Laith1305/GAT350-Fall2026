@@ -28,9 +28,15 @@ namespace nu
 		}
 
 		JSON_READ_NAME(document, "base_color", m_defaults.baseColor);
+		JSON_READ_NAME(document, "specular_color", m_defaults.specularColor);
+		JSON_READ_NAME(document, "shininess", m_defaults.shininess);
+		JSON_READ_NAME(document, "emissive_color", m_defaults.emissiveColor);
 		JSON_READ_NAME(document, "tiling", m_defaults.tiling);
 		JSON_READ_NAME(document, "offset", m_defaults.offset);
 		JSON_READ_NAME(document, "shininess", m_defaults.shininess);
+
+
+
 
 		// texture slots in sampler order, slot 0 = register(t0, space2)
 		JSON_READ_NAME(document, "textures", m_textureSlots);
@@ -78,5 +84,21 @@ namespace nu
 	{
 		auto it = std::find(m_textureSlots.begin(), m_textureSlots.end(), name);
 		return (it != m_textureSlots.end()) ? (int)std::distance(m_textureSlots.begin(), it) : -1;
+	}
+
+	void Material::UpdateGui()
+	{
+		ImGui::TextColored({ 0, 1, 0, 1 }, "Shaders");
+		ImGui::Separator();
+		ImGui::Text("Vertex Shader: %s", m_vertexShader->GetName().c_str());
+		ImGui::Text("Fragment Shader: %s", m_fragmentShader->GetName().c_str());
+
+		ImGui::TextColored({ 0, 1, 0, 1 }, "Texture Slots");
+		ImGui::Separator();
+
+		for (size_t i = 0; i < m_textureSlots.size(); i++)
+		{
+			ImGui::Text("TextureSlot [%d] - %s", i + 1, m_textureSlots[i].c_str());
+		}
 	}
 }

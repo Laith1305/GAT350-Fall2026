@@ -4,6 +4,7 @@
 #include "Math/Transform.h"
 #include "Renderer/Model.h"
 #include "Resources/Resource.h"
+#include "Editor/Editor.h"
 
 #include <string>
 #include <memory>
@@ -69,6 +70,7 @@ namespace nu
         bool GetPersistent() const { return m_persistent; }
 
         virtual void Read(const json::value_t& value) override;
+		void UpdateGui() override;
 
         void AddComponent(std::unique_ptr<Component> component);
 

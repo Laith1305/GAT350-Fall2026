@@ -17,9 +17,12 @@ namespace nu
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(filename,
 			aiProcess_Triangulate |
+			aiProcess_JoinIdenticalVertices |
 			aiProcess_GenSmoothNormals |
 			aiProcess_FlipUVs |
-			aiProcess_CalcTangentSpace);
+			aiProcess_CalcTangentSpace |
+			aiProcess_RemoveRedundantMaterials |
+			aiProcess_OptimizeMeshes);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
@@ -54,6 +57,25 @@ namespace nu
 			renderer.SetVertexBuffer(*mesh.vertexBuffer);
 			renderer.SetIndexBuffer(*mesh.indexBuffer);
 			renderer.DrawIndex(*mesh.indexBuffer);
+		}
+	}
+
+	void Model::UpdateGui()
+	{
+		Resource::UpdateGui();
+
+		ImGui::TextColored({ 0, 1, 0, 1 }, "Meshes");
+		ImGui::Separator();
+		for (size_t i = 0; i < m_meshes.size(); i++)
+		{
+			ImGui::Text("Mesh [%d]: Material [%d]", i, m_meshes[i].materialIndex);
+		}
+
+		ImGui::TextColored({ 0, 1, 0, 1 }, "Materials");
+		ImGui::Separator();
+		for (size_t i = 0; i < m_materials.size(); i++)
+		{
+			ImGui::Text("Material [%d]: %s", i, m_materials[i].GetName().c_str());
 		}
 	}
 
@@ -187,6 +209,8 @@ namespace nu
 			// print what was loaded for this slot
 			aiString name;
 			source->Get(AI_MATKEY_NAME, name);
+
+			instance.SetName(name.C_Str());
 
 			const MaterialData& data = instance.GetData();
 			std::cout << "  [" << i << "] " << name.C_Str()

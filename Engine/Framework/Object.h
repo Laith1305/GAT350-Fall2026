@@ -1,13 +1,16 @@
 #pragma once
 #include "Serialization/Json.h"
+#include "Editor/Editor.h"
 #include <string>
 #include <memory>
 
-#define CLASS_PROTOTYPE(classname) virtual std::unique_ptr<Object> Clone() const { return std::make_unique<classname>(*this); }
+#define CLASS_PROTOTYPE(classname) \
+	virtual std::unique_ptr<Object> Clone() const { return std::make_unique<classname>(*this); } \
+	virtual std::string GetClassName() const { return #classname; } 
 
 namespace nu
 {
-	class Object
+	class Object : public IGui
 	{
 	public:
 		Object() = default;
@@ -15,7 +18,9 @@ namespace nu
 
 		CLASS_PROTOTYPE(Object)
 
+		void SetName(const std::string& name) { m_name = name; }
 		const std::string& GetName() const { return m_name; }
+		
 		bool IsActive() const { return m_active; }
 		void SetActive(bool active = true) { m_active = active; }
 
@@ -23,6 +28,11 @@ namespace nu
 		{
 			JSON_READ_NAME(value, "name", m_name);
 			JSON_READ_NAME(value, "active", m_active);
+		}
+
+		virtual void UpdateGui()
+		{
+			ImGui::Text("Name: %s", m_name.c_str());
 		}
 
 	protected:

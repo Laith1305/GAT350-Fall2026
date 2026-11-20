@@ -92,6 +92,8 @@
     <FxCompile Include="color.frag.hlsl" />
     <FxCompile Include="gouraud.frag.hlsl" />
     <FxCompile Include="gouraud.vert.hlsl" />
+    <FxCompile Include="multi.frag.hlsl" />
+    <FxCompile Include="phong-normal.frag.hlsl" />
     <FxCompile Include="phong.frag.hlsl" />
     <FxCompile Include="phong.vert.hlsl" />
     <FxCompile Include="position.vert.hlsl" />

@@ -27,6 +27,7 @@ struct Input
     float3 position : TEXCOORD0;
     float2 texcoord : TEXCOORD1;
     float3 normal : TEXCOORD2;
+    float3 tangent : TEXCOORD3;
 };
 
 struct Output
@@ -35,6 +36,7 @@ struct Output
     float2 texcoord : TEXCOORD0;
     float3 worldPosition : TEXCOORD1;
     float3 normal : TEXCOORD2;
+    float3 tangent : TEXCOORD3;
 };
 Output main(Input input)
 {
@@ -45,6 +47,8 @@ Output main(Input input)
     output.position = mul(frame.viewProjection, float4(output.worldPosition, 1.0f));
    
     output.normal = normalize(mul((float3x3) object.normalMatrix, input.normal));
+    output.tangent = normalize(mul((float3x3) object.model, input.tangent));
+    
     return output;
 }
 
