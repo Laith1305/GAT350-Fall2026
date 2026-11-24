@@ -1,0 +1,6 @@
+{
+	"type": "material",
+	"vertex_shader": "shaders/skybox.vert",
+	"fragment_shader": "shaders/cube_map.frag",
+	"textures": [ "cube_map"]
+}

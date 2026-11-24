@@ -31,7 +31,7 @@ int main()
     Engine::Instance().Initialize();
 
     Scene scene;
-	scene.Load("Scenes/scene-helmet.json");
+	scene.Load("Scenes/scene-skybox.json");
 
 
     struct Transform

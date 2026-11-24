@@ -195,8 +195,11 @@
     <None Include="..\Build\Assets\Materials\phong.material.json" />
     <None Include="..\Build\Assets\Materials\phong_default.material.json" />
     <None Include="..\Build\Assets\Materials\phong_normal.material.json" />
+    <None Include="..\Build\Assets\Materials\skybox.instance.json" />
+    <None Include="..\Build\Assets\Materials\skybox.material.json" />
     <None Include="..\Build\Assets\Materials\squirrel.instance.json" />
     <None Include="..\Build\Assets\Scenes\scene-helmet.json" />
+    <None Include="..\Build\Assets\Scenes\scene-skybox.json" />
     <None Include="..\Build\Assets\Scenes\scene.json" />
   </ItemGroup>
   <ItemGroup>

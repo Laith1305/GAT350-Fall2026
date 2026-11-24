@@ -41,7 +41,7 @@ namespace nu
 		for (const auto& textureSlot : m_textureSlots) {
 			auto texture = (textureSlot == "normal_map") ?
 				Resources().Get<Texture>("textures/default_normal.png", renderer) :
-				Resources().Get<Texture>("textures/default.png", renderer);
+				Resources().Get<Texture>("textures/default_normal.png", renderer);
 
 			if (!texture)
 			{

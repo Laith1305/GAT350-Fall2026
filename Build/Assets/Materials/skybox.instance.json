@@ -1,0 +1,7 @@
+{
+	"type": "material_instance",
+	"material": "materials/skybox.material.json",
+	"textures": {
+		"cube_map": "textures/skybox/cubemap.json"
+	}
+}

@@ -8,7 +8,7 @@
 #include <Engine.h>
 #include "Core/File.h"
 
-#define DEFAULT_MATERIAL "Materials/phong-default.material.json"
+#define DEFAULT_MATERIAL "Materials/phong_default.material.json"
 
 namespace nu
 {
