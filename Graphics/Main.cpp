@@ -70,7 +70,7 @@ int main()
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
-			//Engine::Instance().ProcessEvent(event);
+			Engine::Instance().GetEditor().ProcessEvent(event);
             if (event.type == SDL_EVENT_QUIT)
             {
                 quit = true;
@@ -98,14 +98,12 @@ int main()
 
 
         //Render
-		Engine::Instance().GetRenderer().EndRenderPass();
-		Engine::Instance().GetRenderer().Draw(1);
-       
-        //MVP 
-		
         renderer.BeginFrame();
 
 		scene.Draw(renderer);
+        Engine::Instance().GetRenderer().EndRenderPass();
+        Engine::Instance().GetEditor().Draw(renderer);
+
 
         renderer.EndFrame();
 

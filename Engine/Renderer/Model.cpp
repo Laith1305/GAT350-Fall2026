@@ -34,7 +34,7 @@ namespace nu
 		// texture paths in the model are relative to the model file
 		std::string directory = GetParentDirectory(filename) + "/";
 		LoadMaterials(scene, directory, renderer);
-		LoadMaterials(scene, directory, renderer);
+
 
 
 

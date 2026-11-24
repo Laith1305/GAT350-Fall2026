@@ -91,9 +91,6 @@ namespace nu
         }
 
         m_swapchainTexture = nullptr;
-
-
-
         if (!SDL_WaitAndAcquireGPUSwapchainTexture(m_commandBuffer, m_window, &m_swapchainTexture, nullptr, nullptr))
         {
             std::cerr << "Could not acquire swapchain texture: " << SDL_GetError() << std::endl;

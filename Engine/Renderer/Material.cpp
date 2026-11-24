@@ -35,9 +35,6 @@ namespace nu
 		JSON_READ_NAME(document, "offset", m_defaults.offset);
 		JSON_READ_NAME(document, "shininess", m_defaults.shininess);
 
-
-
-
 		// texture slots in sampler order, slot 0 = register(t0, space2)
 		JSON_READ_NAME(document, "textures", m_textureSlots);
 

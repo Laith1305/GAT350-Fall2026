@@ -51,6 +51,7 @@ namespace nu
 		const glm::vec3& GetClearColor() const { return m_clearColor; }
 		void EndRenderPass();
 		SDL_GPUCommandBuffer* GetGPUCommandBuffer() const { return m_commandBuffer; }
+		SDL_GPUTexture* GetGPUSwapchainTexture() const { return m_swapchainTexture; }
 
 
 
@@ -59,6 +60,7 @@ namespace nu
 		friend class Shader;
 		friend class VertexBuffer;
 		friend class IndexBuffer;
+		friend class Editor;
 
 	private:
 		SDL_Renderer* m_renderer = nullptr;
@@ -69,7 +71,6 @@ namespace nu
 		SDL_GPUTexture* m_swapchainTexture = nullptr;
 		SDL_GPURenderPass* m_renderPass = nullptr;
 		SDL_GPUTexture* m_depthTexture = nullptr;
-		SDL_GPUTexture* GetGPUSwapchainTexture() const { return m_swapchainTexture; }
 
 
 		int m_width = 0;

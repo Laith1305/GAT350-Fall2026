@@ -282,9 +282,6 @@
     <ClCompile Include="Renderer\Material.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\Editor.cpp">
-      <Filter>Editor</Filter>
-    </ClCompile>
     <ClCompile Include="..\ThirdParty\imgui\imgui.cpp">
       <Filter>Editor\ImGui</Filter>
     </ClCompile>
@@ -305,6 +302,9 @@
     </ClCompile>
     <ClCompile Include="..\ThirdParty\imgui\backends\imgui_impl_sdlgpu3.cpp">
       <Filter>Editor\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\Editor.cpp">
+      <Filter>Editor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

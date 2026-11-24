@@ -56,7 +56,9 @@ namespace nu
 			m_active = !m_active;
 		if (!m_active) return;
 		
-		ImGui::ShowDemoWindow();
+		UpdateHierarchy(scene);
+		UpdateInspector();
+		UpdateAssets();
 	}
 
 	void Editor::BeginFrame()
@@ -73,7 +75,7 @@ namespace nu
 		ImDrawData* drawData = ImGui::GetDrawData();
 
 		// skip drawing when minimized (no swapchain texture) or there's nothing to draw
-		SDL_GPUTexture* swapchainTexture = nullptr;
+		SDL_GPUTexture* swapchainTexture = renderer.GetGPUSwapchainTexture();
 		if (!swapchainTexture || drawData->DisplaySize.x <= 0.0f || drawData->DisplaySize.y <= 0.0f) return;
 
 		SDL_GPUCommandBuffer* commandBuffer = renderer.GetGPUCommandBuffer();
@@ -131,7 +133,6 @@ namespace nu
 			{
 				m_selected = resource.second.get();
 			}
-			ImGui::Text("%s", resource.second->GetName().c_str());
 			ImGui::PopID();
 		}
 		ImGui::End();

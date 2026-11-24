@@ -1,6 +1,9 @@
 {
 	"type": "material_instance",
-	"material": "materials/phong.material.json",
+	"material": "materials/phong_normal.material.json",
 	"tiling": [ 1, 1 ],
-	"textures": { "base_map": "textures/ogre_diffuse.bmp" }
+	"textures": {
+		"base_map": "textures/ogre_diffuse.bmp",
+		"normal_map": "textures/ogre_normal.bmp"
+	}
 }

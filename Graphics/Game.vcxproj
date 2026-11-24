@@ -180,9 +180,6 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
       <Project>{0841fa30-dae5-4e10-88ab-0707ab14df03}</Project>
     </ProjectReference>
@@ -196,8 +193,12 @@
     <None Include="Assets\Materials\multi.material.json" />
     <None Include="Assets\Materials\ogre.instance.json" />
     <None Include="Assets\Materials\phong.material.json" />
+    <None Include="Assets\Materials\phong_normal.material.json" />
     <None Include="Assets\Materials\squirrel.instance.json" />
     <None Include="Assets\Scenes\scene.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
