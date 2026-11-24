@@ -88,9 +88,13 @@ namespace nu
 		// empty slots fall back to a default texture so the shader can always sample
 		std::vector<SDL_GPUTextureSamplerBinding> bindings;
 		bindings.reserve(m_textures.size());
-		for (const auto& texture : m_textures)
+
+
+		for (size_t slot = 0; slot < m_textures.size(); slot++)
 		{
-			const Texture& source = texture ? *texture : *m_material->GetDefaultTexture();
+			const auto& texture = m_textures[slot];
+			const Texture& source = texture ? *texture : *m_material->GetDefaultTexture(slot);
+
 			bindings.push_back({ source.GetGPUTexture(), source.GetGPUSampler() });
 		}
 

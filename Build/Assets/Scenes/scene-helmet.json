@@ -58,17 +58,15 @@
       ]
     },
     {
-      "name": "Ogre",
+      "name": "Helmet",
       "type": "Actor",
-      "tag": "Ogre",
       "transform": {
         "position": [ 0, 0, 0 ]
       },
       "components": [
         {
           "type": "ModelComponent",
-          "model": "models/ogre.obj",
-          "materials": [ "materials/ogre.instance.json" ]
+          "model": "models/flight-helmet/flighthelmet.gltf"
         }
       ]
     }

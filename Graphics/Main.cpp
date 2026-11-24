@@ -1,14 +1,7 @@
 #include "Engine.h"
-#include "Core/File.h"
-#include "Math/Transform.h"
-#include "Renderer/Model.h"
 #include "Framework/Scene.h"
-#include "Editor/Editor.h"
-#include <Resources/ResourceManager.h>
-#include <Renderer/VertexBuffer.h>
-#include <Renderer/IndexBuffer.h>
-#include <Renderer/Pipeline.h>
-#include <Renderer/Shader.h>
+#include "Core/File.h"
+
 
 #define GLM_ENABLE_EXPERIMENTAL 
 #include <glm/gtx/euler_angles.hpp>
@@ -38,7 +31,7 @@ int main()
     Engine::Instance().Initialize();
 
     Scene scene;
-	scene.Load("Scenes/scene.json");
+	scene.Load("Scenes/scene-helmet.json");
 
 
     struct Transform

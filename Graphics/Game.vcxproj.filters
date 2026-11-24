@@ -12,28 +12,34 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Scenes\scene.json">
+    <None Include="..\Build\Assets\Scenes\scene.json">
       <Filter>Assets\Scenes</Filter>
     </None>
-    <None Include="Assets\Materials\phong.material.json">
-      <Filter>Assets\Materials</Filter>
-    </None>
-    <None Include="Assets\Materials\ogre.instance.json">
-      <Filter>Assets\Materials</Filter>
-    </None>
-    <None Include="Assets\Materials\squirrel.instance.json">
-      <Filter>Assets\Materials</Filter>
-    </None>
-    <None Include="Assets\Materials\multi.material.json">
-      <Filter>Assets\Materials</Filter>
-    </None>
-    <None Include="Assets\Materials\ground.instance.json">
+    <None Include="..\Build\Assets\Materials\ground.instance.json">
       <Filter>Assets\Materials</Filter>
     </None>
     <None Include="..\Build\Assets\Materials\lava.instance.json">
       <Filter>Assets\Materials</Filter>
     </None>
-    <None Include="Assets\Materials\phong_normal.material.json">
+    <None Include="..\Build\Assets\Materials\multi.material.json">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\Build\Assets\Materials\ogre.instance.json">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\Build\Assets\Materials\phong.material.json">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\Build\Assets\Materials\phong_normal.material.json">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\Build\Assets\Materials\squirrel.instance.json">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\Build\Assets\Scenes\scene-helmet.json">
+      <Filter>Assets\Scenes</Filter>
+    </None>
+    <None Include="..\Build\Assets\Materials\phong_default.material.json">
       <Filter>Assets\Materials</Filter>
     </None>
   </ItemGroup>
